@@ -25,16 +25,17 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         inputTitle = (EditText)findViewById(R.id.inputTitle);
         list = (ListView)findViewById(R.id.list);
-        initList();
+        initListView();
 
     }
-    private void initList() {
+    private void initListView() {
         data = new LinkedList<>();
 
         adapter =new SimpleAdapter(
                         this,data,
                         R.layout.layout_item,
                         from,to);
+
         list.setAdapter(adapter);
     }
     public void addItem(View v){
