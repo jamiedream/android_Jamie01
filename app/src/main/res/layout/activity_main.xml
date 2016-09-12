@@ -17,8 +17,10 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:text="Search"
+            android:onClick="addItem"
             />
         <EditText
+            android:id="@+id/inputTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
