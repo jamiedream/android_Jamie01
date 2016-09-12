@@ -10,6 +10,24 @@
         android:onClick="gotoPage2"
         android:text="Go to page2"
         />
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="gotoPage2v2"
+        android:text="Go to page2  for Result"
+        />
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="gotoPage3v2"
+        android:text="Go to pag3  for Result"
+        />
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="exit"
+        android:text="Exit"
+        />
 
     <TextView
         android:layout_width="wrap_content"
