@@ -3,14 +3,22 @@ package android_jamie.lifecycle;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.TextView;
 
 public class Page2Activity extends AppCompatActivity {
     private TextView mesg;
+    private MyApp myApp;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_page2);
+
+        myApp = (MyApp) getApplication();//取得mainactivity設定的a.b
+        Log.d("jamie", "myApp a:" + myApp.getA());
+        Log.d("jamie", "myApp a:" + myApp.getB());
+        //佔記憶體,影響效能,perfer intent
 
         Intent intent = getIntent();
         int stage = intent.getIntExtra("stage",0);
