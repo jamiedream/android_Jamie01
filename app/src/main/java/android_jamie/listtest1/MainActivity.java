@@ -2,10 +2,13 @@ package android_jamie.listtest1;
 // List View
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
+import android.widget.Toast;
 
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -37,6 +40,22 @@ public class MainActivity extends AppCompatActivity {
                         from,to);
 
         list.setAdapter(adapter);
+
+//        list.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Log.i("jamie","OK");
+//            }
+//        });
+//        錯誤選取整個list
+        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Log.i("jamie",""+i);// i 位置
+                Toast.makeText(MainActivity.this, "OK", Toast.LENGTH_SHORT).show();
+
+            }
+        });
     }
     public void addItem(View v){
         String input = inputTitle.getText().toString();
