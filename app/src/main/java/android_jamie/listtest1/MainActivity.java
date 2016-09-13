@@ -52,10 +52,18 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Log.i("jamie",""+i);// i 位置
-                Toast.makeText(MainActivity.this, "OK", Toast.LENGTH_SHORT).show();
-
+                Toast.makeText(MainActivity.this, ""+data.get(i).get(from[0]), Toast.LENGTH_SHORT).show();
+                //                                                                      data  i項中的title傳回toast
             }
         });
+        list.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Log.i("jamie","000000");
+                return true;
+            }
+        });
+
     }
     public void addItem(View v){
         String input = inputTitle.getText().toString();
