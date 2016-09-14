@@ -10,6 +10,7 @@ import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
 
@@ -29,7 +30,8 @@ public class MyView extends View {
     private Bitmap bmp;
     private Matrix matrix;
     private Timer timer;
-    private int ballX, ballY, ballW, ballH, dx, dy;
+    private int ballX, ballY, bW, bH, dx, dy;
+//    private GestureDetector gd;
 
     public MyView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -40,14 +42,29 @@ public class MyView extends View {
         res = context.getResources();
         matrix = new Matrix();
         timer = new Timer();
+//        gd = new GestureDetector(context, new MyGDListener());
     }
-    Timer getTimer(){return timer;}
+
+
+//    private class MyGDListener extends GestureDetector.SimpleOnGestureListener{
+//        @Override
+//        public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+//            Log.d("jamie", "onFling:" + velocityX + "x" + velocityY);
+//            return super.onFling(e1, e2, velocityX, velocityY);
+//        }
+//
+//        @Override
+//        public boolean onDown(MotionEvent e) {
+//            Log.d("jamie", "onDown");
+//            return true; //super.onDown(e);
+//        }
+//    }
 
     private void init(){
         viewW = getWidth(); viewH = getHeight();
+        bW = viewW/8 ; bH = bW;
 
         bmp = BitmapFactory.decodeResource(res, R.drawable.b2);
-        int bW = viewW/8 , bH = bW;
         bmp = resizeBitmap(bmp, bW, bH);
 
         dx = dy = 10;
@@ -64,6 +81,7 @@ public class MyView extends View {
         bmp = Bitmap.createBitmap(src,0,0,src.getWidth(),src.getHeight(),matrix, false);
         return bmp;
     }
+    Timer getTimer(){return timer;}
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
@@ -75,7 +93,7 @@ public class MyView extends View {
 //        matrix.postScale(bW/bmp.getWidth(), bH/bmp.getHeight());
 //        bmp = Bitmap.createBitmap(bmp, 0,0,bmp.getWidth(),bmp.getHeight(),matrix,false);
 
-        canvas.drawBitmap(bmp, 0, 0, null);
+        canvas.drawBitmap(bmp, ballX, ballY, null);
 
         Paint p = new Paint();
         p.setColor(Color.BLACK);
@@ -103,8 +121,8 @@ public class MyView extends View {
     private class BallTask extends TimerTask{
         @Override
         public void run() {
-            if (ballX<0 || ballX + ballW > viewW) dx *= -1;
-            if (ballY<0 || ballY + ballH > viewH) dy *= -1;
+            if (ballX<0 || ballX + bW > viewW) dx *= -1;
+            if (ballY<0 || ballY + bH > viewH) dy *= -1;
             ballX += dx; ballY += dy;
         }
     }
@@ -124,6 +142,7 @@ public class MyView extends View {
 
 //        return super.onTouchEvent(event);         會觸發mainactivity的myView.setOnClickListener
         return true;//true會抓到touch的路徑
+//        return gd.onTouchEvent(event);
     }
 
 //    @Override
