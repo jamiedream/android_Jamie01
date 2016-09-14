@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 
+import java.util.Timer;
+
 public class MainActivity extends AppCompatActivity {
     private MyView myView;
     @Override
@@ -20,5 +22,11 @@ public class MainActivity extends AppCompatActivity {
 //            }
 //        });
 
+    }
+
+    @Override
+    public void finish() {
+        myView.getTimer().cancel();
+        super.finish();
     }
 }
