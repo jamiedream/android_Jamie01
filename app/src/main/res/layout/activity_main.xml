@@ -5,16 +5,52 @@
     android:orientation="vertical"
 >
     <Button
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:text="Editor"
+    android:onClick="editor"
+    />
+    <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Test 1"
-        android:onClick="test1"
+        android:text="SP"
+        android:onClick="sp"
         />
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Test 2"
-        android:onClick="test2"
+        android:text="FOUT"
+        android:onClick="fout"
+        />
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="FIS"
+        android:onClick="fis"
+        />
+    <Button
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:text="APP1"
+    android:onClick="app1"
+    />
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="APP2"
+        android:onClick="app2"
+        />
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="APP1 R"
+        android:onClick="app1r"
+        />
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="APP2 R"
+        android:onClick="app2r"
         />
     <TextView
         android:id="@+id/testInfo"
