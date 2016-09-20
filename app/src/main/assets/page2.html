@@ -18,9 +18,17 @@ function initMap() {
     center: {lat: -34.397, lng: 150.644},
     zoom: 8
   });
+  map.addListener("click", function(e){
+        var lat = e.latLng.lat();
+        var lng = e.latLng.lng();
+        LUCY.getLatLng(lat, lng);
+        <!--alert(lat+":"+lng);-->
+  });
 }
-
-    </script>
+function moveMap(newLat, newLng){
+    map.setCenter({lat:newLat, lng:newLng});
+}
+</script>
 <script async defer
         src="https://maps.googleapis.com/maps/api/js?&callback=initMap">
 </script>
