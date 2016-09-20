@@ -1,0 +1,22 @@
+<script>
+    function test(){
+        var here = document.getElementById("here");
+        here.innerHTML = "Hello, Jamie";
+    }
+    function test2(name){
+        var here = document.getElementById("here2");
+        here.innerHTML = "Hello "+ name;
+    }
+    function test3(x,y){
+        var here = document.getElementById("here2");
+        var result = x+y;
+        here.innerHTML = "x"+"+"+"y"+"="+result;
+    }
+</script>
+<h1>Jamie MESA</h1>
+<hr/>
+Hello world!
+<input type="button" value="Click" onclick="test()">
+<input type="button" value="Result" onclick="test3(3,3)">
+<div id="here"></div>
+<div id="here2"></div>
