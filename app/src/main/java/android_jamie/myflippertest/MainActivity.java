@@ -18,6 +18,8 @@ public class MainActivity extends AppCompatActivity {
 
         animInLeftRight = AnimationUtils.loadAnimation(this,R.anim.inleftright);
         animOutLeftRight = AnimationUtils.loadAnimation(this,R.anim.outleftright);
+        animInRightLeft = AnimationUtils.loadAnimation(this,R.anim.inrightleft);
+        animOutRightLeft = AnimationUtils.loadAnimation(this,R.anim.outrightleft);
 
         vf = (ViewFlipper)findViewById(R.id.am);
         vf.setOnTouchListener(new View.OnTouchListener() {
@@ -26,6 +28,9 @@ public class MainActivity extends AppCompatActivity {
                 vf.setInAnimation(animInLeftRight);
                 vf.setOutAnimation(animOutLeftRight);
                 vf.showNext();
+//                vf.setInAnimation(animInRightLeft);
+//                vf.setOutAnimation(animOutRightLeft);
+//                vf.showPrevious();
                 return false;
             }
         });
