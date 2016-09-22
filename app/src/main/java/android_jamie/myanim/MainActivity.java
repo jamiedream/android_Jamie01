@@ -50,13 +50,14 @@ public class MainActivity extends AppCompatActivity {
         set.start();
     }
     public void test4(View v){
-        anim1 = ObjectAnimator.ofFloat(img, "x", -200, 0);
-        anim2 = ObjectAnimator.ofFloat(img, "alpha", 0f, 1f);
-        anim3 = ObjectAnimator.ofFloat(img, "royationX", 0f, 360f, 0f);
+        anim1 = ObjectAnimator.ofFloat(img, "x", 0, 200);
+        anim2 = ObjectAnimator.ofFloat(img, "y", 0, 500);
+//        anim2 = ObjectAnimator.ofFloat(img, "rotationY", 0f, 360f, 0f);
+//        anim3 = ObjectAnimator.ofFloat(img, "rotationX", 0f, 360f, 0f);
 
 
         AnimatorSet set = new AnimatorSet();
-        set.playSequentially(anim1,anim2, anim3);
+        set.playSequentially(anim1,anim2);
         set.setDuration(2*1000);
         set.start();
     }
