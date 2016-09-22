@@ -66,5 +66,7 @@ public class MainActivity extends AppCompatActivity {
         Bitmap bmp = BitmapFactory.decodeFile(sdroot.getAbsolutePath()+"/jamie.jpg");
         img.setImageBitmap(bmp);
     }
-    public void test2(View v){}
+    public void test2(View v){
+
+    }
 }
