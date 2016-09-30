@@ -11,6 +11,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.os.Build;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -26,7 +27,9 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Set;
+import java.util.Timer;
 import java.util.UUID;
+
 
 public class MainActivity extends AppCompatActivity {
     private static final int REQUEST_ENABLE_BT = 1;
@@ -41,6 +44,7 @@ public class MainActivity extends AppCompatActivity {
     private LinkedList<HashMap<String,Object>> data;
     private MyBTR receiver;
     private UUID MY_UUID = UUID.fromString("00001101-0000-1000-8000-00805f9b34fb");
+    private AcceptThread serverthread;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,6 +75,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 BluetoothDevice remoteDevice = (BluetoothDevice) data.get(position).get("device");
+                ConnectThread clientThread = new ConnectThread(remoteDevice);
+                clientThread.start();
             }
         });
 
@@ -93,30 +99,7 @@ public class MainActivity extends AppCompatActivity {
 
         }
     }
-    public void edi(View v){
-        Intent discoverableIntent = new
-                Intent(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE);
-        discoverableIntent.putExtra(BluetoothAdapter.EXTRA_DISCOVERABLE_DURATION, 300);
-        startActivity(discoverableIntent);
-    }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == REQUEST_ENABLE_BT){
-            if(requestCode == RESULT_OK){
-                isBTEnable = true;
-            }
-        }
-    }
-
-    @Override
-    public void finish() {
-        if(isSupport && !isBTInitEnable){
-            mBA.disable();
-        }
-        super.finish();
-    }
 
     @Override
     protected void onResume() {
@@ -135,10 +118,7 @@ public class MainActivity extends AppCompatActivity {
         unregisterReceiver(receiver);
     }
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-    }
+
 
     public void scan(View v){
         data.clear();
@@ -151,8 +131,9 @@ public class MainActivity extends AppCompatActivity {
             item.put(from[2],"paired");
             item.put("device",device);
             data.add(item);
-            adapter.notifyDataSetChanged();
+
         }
+        adapter.notifyDataSetChanged();
         // Discovering devices
         mBA.startDiscovery();
 
@@ -162,8 +143,9 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onReceive(Context context, Intent intent) {
             BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
-            HashMap<String,Object> item = new HashMap<>();
+
             if (!isDevice(device.getAddress())) {
+                HashMap<String,Object> item = new HashMap<>();
                 item.put(from[0], device.getName());
                 item.put(from[1], device.getAddress());
                 item.put(from[2], "scan");
@@ -172,6 +154,32 @@ public class MainActivity extends AppCompatActivity {
                 adapter.notifyDataSetChanged();
             }
         }
+    }
+    public void edi(View v){
+        Intent discoverableIntent = new
+                Intent(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE);
+        discoverableIntent.putExtra(BluetoothAdapter.EXTRA_DISCOVERABLE_DURATION, 300);
+        startActivity(discoverableIntent);
+    }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == REQUEST_ENABLE_BT){
+            if(requestCode == RESULT_OK){
+                isBTEnable = true;
+            }
+        }
+    }
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    }
+    @Override
+    public void finish() {
+        if(isSupport && !isBTInitEnable){
+            mBA.disable();
+        }
+        super.finish();
     }
     private boolean isDevice(String addr){
         boolean isExist=false;
@@ -184,7 +192,7 @@ public class MainActivity extends AppCompatActivity {
         return isExist;
     }
     public void asserver(View v){
-        AcceptThread serverthread = new AcceptThread();
+        serverthread = new AcceptThread();
         serverthread.start();
     }
     private class AcceptThread extends Thread {
@@ -209,10 +217,11 @@ public class MainActivity extends AppCompatActivity {
                     socket = mmServerSocket.accept();
                     Log.d("jamie","accept");
                 } catch (IOException e) {
-                    break;
+//                    break;
                 }
 
             }
+
         }
 
         /** Will cancel the listening socket, and cause the thread to finish */
@@ -221,6 +230,71 @@ public class MainActivity extends AppCompatActivity {
                 mmServerSocket.close();
             } catch (IOException e) { }
         }
+    }
+    private class ConnectThread extends Thread {
+        private final BluetoothSocket mmSocket;
+        private final BluetoothDevice mmDevice;
+
+        public ConnectThread(BluetoothDevice device) {
+            // Use a temporary object that is later assigned to mmSocket,
+            // because mmSocket is final
+            BluetoothSocket tmp = null;
+            mmDevice = device;
+
+            // Get a BluetoothSocket to connect with the given BluetoothDevice
+            try {
+                // MY_UUID is the app's UUID string, also used by the server code
+                tmp = device.createRfcommSocketToServiceRecord(MY_UUID);
+            } catch (IOException e) { }
+            mmSocket = tmp;
+        }
+
+        public void run() {
+            // Cancel discovery because it will slow down the connection
+            mBA.cancelDiscovery();
+
+            try {
+                // Connect the device through the socket. This will block
+                // until it succeeds or throws an exception
+                mmSocket.connect();
+                Log.d("jamie", "Client connect OK");
+            } catch (IOException connectException) {
+                // Unable to connect; close the socket and get out
+                try {
+                    mmSocket.close();
+                } catch (IOException closeException) { }
+                return;
+            }
+
+            // Do work to manage the connection (in a separate thread)
+//            manageConnectedSocket(mmSocket);
+        }
+
+        /** Will cancel an in-progress connection, and close the socket */
+        public void cancel() {
+            try {
+                mmSocket.close();
+            } catch (IOException e) { }
+        }
+    }
+    public void test1(View v) {
+        //可異動UI
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                Log.d("jamie", "handler");
+            }
+        }, 3 * 1000);
+        //不可異動
+//        Timer timer = new Timer();
+//        timer.schedule(new Runnable(){
+//            @Override
+//            public void run() {
+//                Log.d("jamie", "handler");
+//            }
+//        }, 3 * 1000);
+
     }
 
 }

@@ -23,6 +23,12 @@
         android:text="As Server"
         android:onClick="asserver"
         />
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Test 1"
+        android:onClick="test1"
+        />
     <ListView
         android:id="@+id/listdevices"
         android:layout_width="match_parent"
