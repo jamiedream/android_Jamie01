@@ -28,8 +28,8 @@
         android:text="Camera"
         android:onClick="camera"
         />
-    <TextView
+    <ImageView
+        android:id="@+id/img"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hello World!" />
+        android:layout_height="wrap_content" />
 </LinearLayout>
