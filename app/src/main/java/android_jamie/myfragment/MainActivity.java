@@ -36,9 +36,17 @@ public class MainActivity extends AppCompatActivity {
     }
 
     F1Fragment getF1(){
+        tran = fmgr.beginTransaction();
+        tran.replace(R.id.container, isF1?f1:f2);
+        tran.addToBackStack(null);
+        tran.commit();
         return f1;
     }
     F2Fragment getF2(){
+        tran = fmgr.beginTransaction();
+        tran.replace(R.id.container, isF1?f1:f2);
+        tran.addToBackStack(null);
+        tran.commit();
         return f2;
     }
 
