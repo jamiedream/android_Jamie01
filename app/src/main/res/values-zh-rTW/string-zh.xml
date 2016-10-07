@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">語言設定</string>
+    <string name="welcome_message">歡迎你好</string>
+    <string name="button_on">開</string>
+    <string name="button_off">關</string>
+</resources>
